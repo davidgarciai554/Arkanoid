@@ -11,11 +11,14 @@ import acm.graphics.GLabel;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import java.awt.Font;
-
+import acm.util.RandomGenerator;
 
 
 public class Arkanoid extends GraphicsProgram{
+	RandomGenerator aleatorio= new RandomGenerator();
 	boolean partidaIniciada = false;
+	boolean automatico=false;
+	GLabel Auto=new GLabel("Auto");
 	GImage Fondo=new GImage("img/fondo.jpg");
 	GImage arkanoidTitulo=new GImage("img/arkanoid.png");
 	GImage FondoInicio=new GImage("img/fondoIncio.jpg");
@@ -69,12 +72,23 @@ public class Arkanoid extends GraphicsProgram{
 			add(bola,ANCHO_PANTALLA/2,ALTO_PANTALLA-150);
 			partidaIniciada = true;
 		}
+		Auto.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+		if(getElementAt(posicionX,posicionY)==arkanoidTitulo){
+			if(automatico){
+				automatico=false;
+				remove(Auto);
+			}
+			else{
+				automatico=true;
+				add(Auto,2,20);
+			}
+		}
+		
+		
 	}
 
 	public void run(){
 		
-		
-		//waitForClick();
 		while (!partidaIniciada){
 			pause(5);
 			//no hace nada hasta que empiece
@@ -82,11 +96,13 @@ public class Arkanoid extends GraphicsProgram{
 		while(GAMEOVER>0 && Victoria==false){
 			marcador.setLabel(""+puntuacion);
 			bola.FisicasBola(this);
-			pause(5);
+			if(automatico){
+				cursor.setLocation(bola.getX()-aleatorio.nextInt(2,58),cursor.getY());
+			}
+			//pause(5);
 			if(ladrillos==0){
 				Victoria=true;
-			}
-			
+			}			
 		}
 		if(GAMEOVER==0 && Victoria==false){//En el caso que pierdas saldra esta pantalla
 			add(FondoNegro);
@@ -105,12 +121,12 @@ public class Arkanoid extends GraphicsProgram{
 			vidas.setFont(new Font("Comic Sans MS",Font.BOLD,20));
 			vidas.setColor(Color.white);
 			add(vidas,ANCHO_PANTALLA/2-150,ALTO_PANTALLA/2);
-			add(Corazon1,ANCHO_PANTALLA/2,ALTO_PANTALLA/2+30);
+			add(Corazon1,ANCHO_PANTALLA/2-50,ALTO_PANTALLA/2+30);
 			if(GAMEOVER>=2){
-				add(Corazon2,ANCHO_PANTALLA/2+50,ALTO_PANTALLA/2+30);
+				add(Corazon2,ANCHO_PANTALLA/2-10,ALTO_PANTALLA/2+30);
 			}
 			if(GAMEOVER>=3){
-				add(Corazon3,ANCHO_PANTALLA/2+100,ALTO_PANTALLA/2+30);
+				add(Corazon3,ANCHO_PANTALLA/2+30,ALTO_PANTALLA/2+30);
 			}
 			
 			
