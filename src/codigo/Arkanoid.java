@@ -35,9 +35,9 @@ public class Arkanoid extends GraphicsProgram{
 	int GAMEOVER=3,ladrillos=0,puntuacion=0;
 	boolean direccionLadrillos=false;//Depende del mapa que se ejecute los ladrillos tendran una direccion
 	boolean Victoria=false;//Indicara que el usuario ha eliminado todos los ladrillos
-	GImage Corazon1=new GImage("img/corazon1.png");
-	GImage Corazon2=new GImage("img/corazon2.png");
-	GImage Corazon3=new GImage("img/corazon3.png");
+	GImage Corazon1=new GImage("img/corazon.png");
+	GImage Corazon2=new GImage("img/corazon.png");
+	GImage Corazon3=new GImage("img/corazon.png");
 	GLabel marcador=new GLabel("0");
 
 	public void init(){
@@ -50,6 +50,7 @@ public class Arkanoid extends GraphicsProgram{
 		int posicionY = evento.getY();//Donde se ha producido el click en eje Yç
 		if(getElementAt(posicionX,posicionY)==muro||getElementAt(posicionX,posicionY)==Muro){
 			removeAll();
+			Fondo.setSize(ANCHO_PANTALLA,ALTO_PANTALLA);
 			add(Fondo);
 			add(Corazon1,ANCHO_PANTALLA-50,ALTO_PANTALLA-90);
 			add(Corazon2,ANCHO_PANTALLA-80,ALTO_PANTALLA-90);
@@ -62,6 +63,7 @@ public class Arkanoid extends GraphicsProgram{
 		}
 		if(getElementAt(posicionX,posicionY)==piramide||getElementAt(posicionX,posicionY)==Piramide ){
 			removeAll();
+			Fondo.setSize(ANCHO_PANTALLA,ALTO_PANTALLA);
 			add(Fondo);
 			add(Corazon1,ANCHO_PANTALLA-50,ALTO_PANTALLA-90);
 			add(Corazon2,ANCHO_PANTALLA-80,ALTO_PANTALLA-90);
@@ -83,12 +85,12 @@ public class Arkanoid extends GraphicsProgram{
 				add(Auto,2,20);
 			}
 		}
-		
-		
+
+
 	}
 
 	public void run(){
-		
+
 		while (!partidaIniciada){
 			pause(5);
 			//no hace nada hasta que empiece
@@ -97,20 +99,21 @@ public class Arkanoid extends GraphicsProgram{
 			marcador.setLabel(""+puntuacion);
 			bola.FisicasBola(this);
 			if(automatico){
-				cursor.setLocation(bola.getX()-aleatorio.nextInt(2,58),cursor.getY());
+				cursor.setLocation(bola.getX()-aleatorio.nextInt(5,55),cursor.getY());
 			}
-			//pause(5);
+			pause(5);
 			if(ladrillos==0){
 				Victoria=true;
 			}			
 		}
 		if(GAMEOVER==0 && Victoria==false){//En el caso que pierdas saldra esta pantalla
-			add(FondoNegro);
 			FondoNegro.setSize(ANCHO_PANTALLA,ALTO_PANTALLA);
+			add(FondoNegro);
 			add(Muerte,50,0);
 		}
 		if(ladrillos==0 && Victoria==true){//En el caso que ganes saldra esta pantalla
 			removeAll();
+			FondoNegro.setSize(ANCHO_PANTALLA,ALTO_PANTALLA);
 			add(FondoNegro);
 			GLabel puntos=new GLabel("");
 			puntos.setFont(new Font("Comic Sans MS",Font.BOLD,20));
@@ -127,21 +130,17 @@ public class Arkanoid extends GraphicsProgram{
 			}
 			if(GAMEOVER>=3){
 				add(Corazon3,ANCHO_PANTALLA/2+30,ALTO_PANTALLA/2+30);
-			}
-			
-			
+			}	
 		}
 	}
 
 	public void mouseMoved(MouseEvent evento){
-
 		cursor.setLocation(evento.getX()-30,cursor.getY());
 	}
 
 	public void creaPiramide(){
-
 		int numeroLadrillos=14;
-		int desplazamientoInicial =(getWidth()-numeroLadrillos*ANCHO_LADRILLO)/2;
+		int desplazamientoInicial =(ANCHO_PANTALLA-numeroLadrillos*ANCHO_LADRILLO)/2;
 		for(int j=0;j<numeroLadrillos;j++){
 			for(int i=j;i<numeroLadrillos;i++){
 				Ladrillo miLadrillo =new Ladrillo(desplazamientoInicial+ANCHO_LADRILLO*i-ANCHO_LADRILLO/2*j,ALTO_LADRILLO*j+ALTO_LADRILLO,ANCHO_LADRILLO,ALTO_LADRILLO,"img/LadrilloPiramide.png");

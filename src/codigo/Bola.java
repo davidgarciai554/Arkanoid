@@ -8,7 +8,7 @@ import acm.graphics.GOval;
 
 public class Bola extends GOval{
 	RandomGenerator aleatorio= new RandomGenerator();
-	private double vx=(aleatorio.nextInt(-2,2)),vy=-1;
+	private double vx=(aleatorio.nextDouble(-2.5,2.5)),vy=-1;
 	public Bola(double width, double height) {
 		super(width, height);
 	}
@@ -105,12 +105,12 @@ public class Bola extends GOval{
 					vx=-((posX-aux.getX())/10);
 				}
 			}
-			while(vx>2)vx-=0.1; //Regulamos la vx para que sea jugable
-			while(vx<-2)vx+=0.1;
+			while(vx>2.5)vx-=0.1; //Regulamos la vx para que sea jugable
+			while(vx<-2.5)vx+=0.1;
 
 			vy*=-1;
-			sonidoCursor sonidoCursor=new sonidoCursor();
-			sonidoCursor.start();
+			sonidoCursor _sonidoCursor=new sonidoCursor();
+			_sonidoCursor.start();
 			noHaChocado=false;
 		}
 		if(aux instanceof Ladrillo){
@@ -137,24 +137,25 @@ public class Bola extends GOval{
 				arkanoid.ladrillos--;
 
 			}
-			sonidoLadrillo sonidoLadrillo=new sonidoLadrillo();
-			sonidoLadrillo.start();
+			sonidoLadrillo _sonidoLadrillo=new sonidoLadrillo();
+			_sonidoLadrillo.start();
 			noHaChocado=false;
 		}
 		return noHaChocado;
 	}
 
-	public class sonidoCursor extends Thread {//Creamos un hilo para que
-		public void run() {                   //reproduzca el sonido a la vez
-			SonidoCursor s =new SonidoCursor();//que sigue el juego
-			s.ReproducirSonido(s.getClass().getResource("/Sound/golpeoCursor.wav").getFile());
-		}
+	public class sonidoCursor extends Thread {		
+		public void run() {                               
+            ReproducirSonidos s = new ReproducirSonidos();
+            s.sonido(s.getClass().getResource("/Sound/golpeoCursor.wav").getFile());
+        }
 	} 
 
-	public class sonidoLadrillo extends Thread {//Creamos un hilo para que  												
-		public void run() {                     //reproduzca el sonido a la vez
-			SonidoLadrillo s =new SonidoLadrillo(); //que sigue el juego
-			s.ReproducirSonido(s.getClass().getResource("/Sound/golpeoLadrillo.wav").getFile());
-		}
-	}
+	public class sonidoLadrillo extends Thread {												
+
+        public void run() {     
+        	ReproducirSonidos s = new ReproducirSonidos(); //que sigue el juego
+            s.sonido(s.getClass().getResource("/Sound/golpeoLadrillo.wav").getFile());
+        }
+    }
 }
